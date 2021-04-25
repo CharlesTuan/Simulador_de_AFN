@@ -32,6 +32,6 @@ Cada linha do input representa um processamento.
 
 
 
-LEITURA DO ARQUIVO DE RESPOSTA:
+LEITURA DO ARQUIVO DE RESPOSTA
 
 
