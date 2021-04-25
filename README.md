@@ -45,7 +45,7 @@ q1 # inicio da descricao da matriz linha 0, coluna 0
 
 q1 q2 # linha 0, coluna 1
 
-* # linha 0, coluna 2
+* 
 
 q3 # matriz linha 1, coluna 0
 
@@ -53,7 +53,7 @@ q3 # matriz linha 1, coluna 0
 
 q3
 
-* # matriz linha 2, coluna 0
+* 
 
 q4
 
