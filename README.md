@@ -45,25 +45,25 @@ Para um rule.txt como o seguinte:
 
 - q1 q2 # linha 0, coluna 1
 
-- * 
+- \* 
 
 - q3 # matriz linha 1, coluna 0
 
-- *
+- \* 
 
 - q3
 
-- * 
+- \*  
 
 - q4
 
-- *
+- \* 
 
 - q4 # matriz linha 3, coluna 0
 
 - q4
 
-- *
+- \* 
 
 - q1 # estado inicial
 
