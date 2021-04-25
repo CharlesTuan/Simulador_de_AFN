@@ -44,20 +44,26 @@ public class main {
 		// Estado final desejado para o Automato
 		List<String> finalState = null;
 
+		//Roda enquando tiver linhas no documento
 		while (nodeRulesDataArchive.hasNextLine()) {
 
+			//Conta mais 1 linha
 			line++;
 
+			//Pega o conteudo da nova linha
 			lineText = nodeRulesDataArchive.nextLine();
 
+			//Remove os comentários da leitura
 			if (lineText.indexOf("#") > -1) {
 				lineText = lineText.subSequence(0, lineText.indexOf("#")).toString();
 			}
 
+			//Recebe os Nodes parametrizados
 			if (line == 1) {
 				nodeArray = new ArrayList<String>(Arrays.asList(lineText.split(" ")));
 			}
 
+			//Recebe o alfabeto
 			if (line == 2) {
 				dialect = new ArrayList<String>(Arrays.asList(lineText.split(" ")));
 
@@ -66,24 +72,32 @@ public class main {
 				ruleLines = (!nodeArray.isEmpty() ? nodeArray.size() : 0) * (!dialect.isEmpty() ? dialect.size() : 0);
 			}
 
+			//Recebe as gras parametrizadas no arquivo
 			if (line > 2 && line < ruleLines + 2) {
 
+				//Executa para cada node recebido
 				for (String node : nodeArray) {
 					nodeRule = new HashMap<String, List<String>>();
 
+					//Executa para cada dialeto
 					for (String dialectString : dialect) {
 						rule = new ArrayList<String>(Arrays.asList(lineText.split(" ")));
 
+						//Relaciona o dialeto com a regra
 						nodeRule.put(dialectString, rule);
 
+						//Relaciona os dados anteriores com o Node
 						nodeFullData.put(node, nodeRule);
 
+						//Pega a proxima linha
 						lineText = nodeRulesDataArchive.nextLine();
 
+						//Reemove os comentários da proxima linha
 						if (lineText.indexOf("#") > 0) {
 							lineText = lineText.subSequence(0, lineText.indexOf("#")).toString();
 						}
 
+						//Adiciona uma linha
 						line++;
 
 					}
@@ -92,25 +106,27 @@ public class main {
 				if (lineText.indexOf(" ") > 0) {
 					lineText = lineText.subSequence(0, lineText.indexOf(" ")).toString();
 				}
+				//Popula o estado inicial
 				initialState = lineText;
 
 				lineText = nodeRulesDataArchive.nextLine();
 
 				if (lineText.indexOf("#") > 0) {
 					lineText = lineText.subSequence(0, lineText.indexOf("#")).toString();
+					//Popula o estado final
 					finalState = new ArrayList<String>(Arrays.asList(lineText.split(" ")));
 				}
-
 			}
 		}
 
+		//Recebe os comandos
 		Scanner inputNodeAction = new Scanner(new FileReader("src/archive/input.txt"));
 
 		line = 0;
 
 		List<String> nextNode;
 
-		List<String> epsomNextNode;
+		List<String> epsylonNextNode;
 
 		Integer commandSize = null;
 
@@ -124,13 +140,16 @@ public class main {
 
 			System.out.println("Linha de execução -> " + line.toString());
 			System.out.println("Estado inicial ->  " + initialState);
+			//Escreve no documento de texto
 			writerOutPutArquive.printf("Linha de execução -> " + line.toString() + "\n");
 			writerOutPutArquive.printf("Estado inicial ->  " + initialState + "\n");
 
 			lineText = inputNodeAction.nextLine();
 
+			//Popula os comandos
 			List<String> commandList = new ArrayList<String>(Arrays.asList(lineText.split(" ")));
 
+			//Pega as regras para o estado inicial
 			nodeRule = nodeFullData.get(initialState);
 
 			List<Map<String, List<String>>> nodeRuleList = new ArrayList<Map<String, List<String>>>();
@@ -139,12 +158,13 @@ public class main {
 
 			List<Map<String, List<String>>> nodeRuleListAux = new ArrayList<Map<String, List<String>>>();
 
-			List<String> epsomNode;
+			List<String> epsylonNode;
 
-			Map<String, List<String>> epsomRules = new HashMap<String, List<String>>();
+			Map<String, List<String>> epsylonRules = new HashMap<String, List<String>>();
 
 			commandSize = 0;
 
+			//Executa uma ver para cada comando
 			for (String command : commandList) {
 				System.out.println("Simbolo lido ->  " + command);
 				writerOutPutArquive.printf("Simbolo lido ->  " + command + "\n");
@@ -153,28 +173,31 @@ public class main {
 
 				nodeRuleListAux = new ArrayList<Map<String, List<String>>>();
 
+				//Executa para cada regra
 				for (Map<String, List<String>> nodeRuleItem : nodeRuleList) {
 
 					nextNode = nodeRuleItem.get(command);
 
-					epsomNextNode = new ArrayList<String>();
+					epsylonNextNode = new ArrayList<String>();
 
-					epsomNextNode.addAll(nextNode);
+					epsylonNextNode.addAll(nextNode);
 
+					//Valida se existe condição para o epsylon
 					for (String node : nextNode) {
-						epsomRules = nodeFullData.get(node);
-						if (epsomRules != null) {
-							epsomNode = epsomRules.get("Épsylon");
+						epsylonRules = nodeFullData.get(node);
+						if (epsylonRules != null) {
+							epsylonNode = epsylonRules.get("Épsylon");
 
-							for (String epsonNodeItem : epsomNode) {
-								if (epsomNode != null && !epsonNodeItem.equals("*")) {
-									epsomNextNode.add(epsonNodeItem);
+							for (String epsonNodeItem : epsylonNode) {
+								if (epsylonNode != null && !epsonNodeItem.equals("*")) {
+									epsylonNextNode.add(epsonNodeItem);
 								}
 							}
 						}
 					}
 
-					for (String node : epsomNextNode) {
+					//Concatena a string para printar do lado um do outro
+					for (String node : epsylonNextNode) {
 						nextNodes += node + " ";
 					}
 
@@ -184,10 +207,11 @@ public class main {
 					nextNodes = "";
 					acceptOrNot = "";
 
-					for (String node : epsomNextNode) {
+					//Valida se o node chegou ao final dos comandos, e tambem valida se a entrada é aceita ou não
+					for (String node : epsylonNextNode) {
 						if (commandList.size() == commandSize) {
 							for (String states : finalState) {
-								if (epsomNextNode.get(0).equals(states)) {
+								if (epsylonNextNode.get(0).equals(states)) {
 									acceptOrNot = "Aceito";
 								} else if (acceptOrNot.isEmpty()) {
 									acceptOrNot = "Rejeitado";
@@ -209,9 +233,11 @@ public class main {
 						}
 					}
 				}
+				//Caso não tenha terminado ele seta a lista dos proximos nodes
 				nodeRuleList = nodeRuleListAux;
 			}
 		}
+		//Finaliza a gravação do arquivo
 		writerOutPutArquive.close();
 	}
 }
