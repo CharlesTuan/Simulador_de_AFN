@@ -14,32 +14,35 @@ import java.util.Scanner;
 public class main {
 	public static void main(String[] args) throws IOException {
 
-		//Faz a leitura do arquivo de regras do automato
+		// Faz a leitura do arquivo de regras do automato
 		Scanner nodeRulesDataArchive = new Scanner(new FileReader("src/archive/rules.txt"));
 
-		//Cria o arquivo de saída
+		// Cria o arquivo de saída
 		FileWriter outPutArquive = new FileWriter("src/archive/outPut.txt");
 		PrintWriter writerOutPutArquive = new PrintWriter(outPutArquive);
 
-		//Lista dos nodes que serão conhecidos pelo automato
+		// Lista dos nodes que serão conhecidos pelo automato
 		List<String> nodeArray = null;
-		//Dialeto conhecido pelo automato
+		// Dialeto conhecido pelo automato
 		List<String> dialect = null;
-		//Regras de saida para cada dialeto
+		// Regras de saida para cada dialeto
 		List<String> rule = null;
 
-		//Mapa que garda a relação de node para dialeto e regra
+		// Mapa que garda a relação de node para dialeto e regra
 		Map<String, Map<String, List<String>>> nodeFullData = new HashMap<String, Map<String, List<String>>>();
-		//Mapa que garda a regra do node
+		// Mapa que garda a regra do node
 		Map<String, List<String>> nodeRule = new HashMap<String, List<String>>();
 
-		//Linha do arquivo sendo executado
+		// Linha do arquivo sendo executado
 		Integer line = 0;
-		//Informação da linha sendo executada
+		// Informação da linha sendo executada
 		String lineText = null;
+		// Números de regras de nodes nas regras gerais
 		Integer ruleLines = 0;
+		// Estado inicial do automato
 		String initialState = null;
-		String finalState = null;
+		// Estado final desejado para o Automato
+		List<String> finalState = null;
 
 		while (nodeRulesDataArchive.hasNextLine()) {
 
@@ -94,10 +97,10 @@ public class main {
 				lineText = nodeRulesDataArchive.nextLine();
 
 				if (lineText.indexOf("#") > 0) {
-					lineText = lineText.subSequence(0, lineText.indexOf("#") - 1).toString();
+					lineText = lineText.subSequence(0, lineText.indexOf("#")).toString();
+					finalState = new ArrayList<String>(Arrays.asList(lineText.split(" ")));
 				}
 
-				finalState = lineText;
 			}
 		}
 
@@ -112,6 +115,8 @@ public class main {
 		Integer commandSize = null;
 
 		String nextNodes = "";
+
+		String acceptOrNot = "";
 
 		while (inputNodeAction.hasNextLine()) {
 
@@ -177,13 +182,21 @@ public class main {
 					writerOutPutArquive.printf("Estados correntes -> " + nextNodes + "\n");
 
 					nextNodes = "";
+					acceptOrNot = "";
 
 					for (String node : epsomNextNode) {
 						if (commandList.size() == commandSize) {
-							System.out.println("Estado de aceitação -> "
-									+ (epsomNextNode.get(0).equals(finalState) ? "Aceito" : "Rejeitado"));
-							writerOutPutArquive.printf("Estado de aceitação -> "
-									+ (epsomNextNode.get(0).equals(finalState) ? "Aceito" : "Rejeitado") + "\n");
+							for (String states : finalState) {
+								if (epsomNextNode.get(0).equals(states)) {
+									acceptOrNot = "Aceito";
+								} else if (acceptOrNot.isEmpty()) {
+									acceptOrNot = "Rejeitado";
+								} else if (!acceptOrNot.isEmpty() && acceptOrNot.equals("Aceito")) {
+									acceptOrNot = "Aceito";
+								}
+							}
+							System.out.println("Estado de aceitação -> " + acceptOrNot);
+							writerOutPutArquive.printf("Estado de aceitação -> " + acceptOrNot);
 						}
 						nodeRule = nodeFullData.get(node);
 

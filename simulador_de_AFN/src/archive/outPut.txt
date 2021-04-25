@@ -12,10 +12,7 @@ Estados correntes -> q1 q2 q3
 Estados correntes -> q4 
 Simbolo lido ->  0
 Estados correntes -> q1 
-Estado de aceitação -> Rejeitado
-Estados correntes -> q3 
-Estado de aceitação -> Rejeitado
-Estados correntes -> * 
-Estado de aceitação -> Rejeitado
-Estados correntes -> q4 
+Estado de aceitação -> RejeitadoEstados correntes -> q3 
+Estado de aceitação -> RejeitadoEstados correntes -> * 
+Estado de aceitação -> RejeitadoEstados correntes -> q4 
 Estado de aceitação -> Aceito
