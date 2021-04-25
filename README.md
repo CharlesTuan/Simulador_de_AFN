@@ -37,37 +37,37 @@ LEITURA DO ARQUIVO DE RESPOSTA
 O arquivo de resposta vai demonstrar na ordem de execução os estados correntes e no final se aceita ou rejeita.
 Para um rule.txt como o seguinte:
 
-q1 q2 q3 q4 # Linha com o conjunto de estados, separados por espaco
+- q1 q2 q3 q4 # Linha com o conjunto de estados, separados por espaco
 
-0 1 # Linha com o alfabeto, simbolos separados por espaco
+- 0 1 # Linha com o alfabeto, simbolos separados por espaco
 
-q1 # inicio da descricao da matriz linha 0, coluna 0
+- q1 # inicio da descricao da matriz linha 0, coluna 0
 
-q1 q2 # linha 0, coluna 1
+- q1 q2 # linha 0, coluna 1
 
-* 
+- * 
 
-q3 # matriz linha 1, coluna 0
+- q3 # matriz linha 1, coluna 0
 
-*
+- *
 
-q3
+- q3
 
-* 
+- * 
 
-q4
+- q4
 
-*
+- *
 
-q4 # matriz linha 3, coluna 0
+- q4 # matriz linha 3, coluna 0
 
-q4
+- q4
 
-*
+- *
 
-q1 # estado inicial
+- q1 # estado inicial
 
-q4 # estados finais
+- q4 # estados finais
 
 Com o seguinte input.txt:
 
