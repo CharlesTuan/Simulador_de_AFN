@@ -18,6 +18,6 @@ Q2 \# input 0 no node Q2 vai para o Q2
 
 Q2 \# input 1 no node Q2 vai para o Q2 
 
-Q1 \# node inicial 
+Q1 \# estado inicial 
 
-Q2 \# node final
+Q2 \# estado final
